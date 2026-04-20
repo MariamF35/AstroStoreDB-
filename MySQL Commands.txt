@@ -1,0 +1,83 @@
+-- USERS
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    role VARCHAR(50)
+);
+
+-- ZONES
+CREATE TABLE zones (
+    zone_id INT AUTO_INCREMENT PRIMARY KEY,
+    zone_name VARCHAR(100)
+);
+
+-- CONTAINERS
+CREATE TABLE containers (
+    container_id VARCHAR(50) PRIMARY KEY,
+    zone_id INT,
+    width INT,
+    depth INT,
+    height INT,
+    max_weight FLOAT,
+    FOREIGN KEY (zone_id) REFERENCES zones(zone_id)
+);
+
+-- ITEMS
+CREATE TABLE items (
+    item_id VARCHAR(50) PRIMARY KEY,
+    name VARCHAR(100),
+    width INT,
+    depth INT,
+    height INT,
+    mass FLOAT,
+    base_priority INT,
+    expiry_date DATE,
+    usage_limit INT,
+    usage_remaining INT,
+    preferred_zone_id INT,
+    status VARCHAR(20),
+    FOREIGN KEY (preferred_zone_id) REFERENCES zones(zone_id)
+);
+
+-- ITEM PLACEMENT
+CREATE TABLE item_placement (
+    placement_id INT AUTO_INCREMENT PRIMARY KEY,
+    item_id VARCHAR(50),
+    container_id VARCHAR(50),
+    pos_w_start INT,
+    pos_d_start INT,
+    pos_h_start INT,
+    pos_w_end INT,
+    pos_d_end INT,
+    pos_h_end INT,
+    FOREIGN KEY (item_id) REFERENCES items(item_id),
+    FOREIGN KEY (container_id) REFERENCES containers(container_id)
+);
+
+-- RETRIEVAL LOGS
+CREATE TABLE retrieval_logs (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    item_id VARCHAR(50),
+    user_id INT,
+    action_type VARCHAR(50),
+    from_container VARCHAR(50),
+    to_container VARCHAR(50),
+    timestamp DATETIME,
+    FOREIGN KEY (item_id) REFERENCES items(item_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- WASTE ITEMS
+CREATE TABLE waste_items (
+    waste_id INT AUTO_INCREMENT PRIMARY KEY,
+    item_id VARCHAR(50),
+    reason VARCHAR(100),
+    date_marked DATE,
+    FOREIGN KEY (item_id) REFERENCES items(item_id)
+);
+
+-- SIMULATION STATE
+CREATE TABLE simulation_state (
+    ->     sim_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     sim_date DATE CURDATE()
+    -> );
