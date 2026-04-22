@@ -78,6 +78,6 @@ CREATE TABLE waste_items (
 
 -- SIMULATION STATE
 CREATE TABLE simulation_state (
-    ->     sim_id INT AUTO_INCREMENT PRIMARY KEY,
-    ->     sim_date DATE CURDATE()
-    -> );
+    sim_id INT AUTO_INCREMENT PRIMARY KEY,
+    sim_date DATE DEFAULT (CURDATE())
+);
